@@ -2,20 +2,35 @@ let num1 = null;
 let num2 = null;
 let operator = null;
 
-let screenContent = null;
-const screen = document.querySelector(".screen");
+let screenValue = "";
+const screenTextContainer = document.querySelector(".text");
 
 const buttons = document.querySelector(".buttons");
 
-buttons.addEventListener("click", (e)=>{
-    if(e.target.tagName == "BUTTON" && e.target.textContent != "Clear"){
-        populateScreen(e.target.textContent)
-    }
-});
+buttons.addEventListener("click", (e) => buttonsPress(e));
 
+function buttonsPress(e){
+    if(e.target.tagName == "BUTTON" && e.target.textContent != "Clear" 
+        && screenValue.length < 13){
+
+        populateScreen(e.target.textContent);
+        screenValue = screenTextContainer.textContent;
+
+    }else if(e.target.textContent == "Clear"){
+        clearScreen();
+        screenValue = "";
+    }
+
+    console.log(screenValue.length);
+    console.log(screenValue);
+}
+
+function clearScreen(){
+    screenTextContainer.textContent = "";
+}
 
 function populateScreen(str){
-    screen.textContent += str;
+    screenTextContainer.textContent = screenTextContainer.textContent.concat(`${str}`);
 }
 
 function add(a, b){
