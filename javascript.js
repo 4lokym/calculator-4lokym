@@ -9,28 +9,96 @@ const buttons = document.querySelector(".buttons");
 
 buttons.addEventListener("click", (e) => buttonsPress(e));
 
+
+
+
 function buttonsPress(e){
-    if(e.target.tagName == "BUTTON" && e.target.textContent != "Clear" 
+    let buttonPressed = e.target;
+
+    //character limt, and distinguish between normal buttons and clear button;
+    if(buttonPressed.tagName == "BUTTON" && buttonPressed.textContent != "Clear" 
         && screenValue.length < 13){
 
-        populateScreen(e.target.textContent);
-        screenValue = screenTextContainer.textContent;
+        if(buttonPressed.classList.contains("digit-buttons")){
+            appendScreen(buttonPressed.textContent);
+        }else if(buttonPressed.classList.contains("operator-buttons")){
+            //if the screenValue.length = 1 and is an operator, replace it
+            if(screenValue.length == 1 && includesOperator(screenValue)){
+                updateScreen(buttonPressed.textContent);
+                operator = buttonPressed.textContent;
 
-    }else if(e.target.textContent == "Clear"){
-        clearScreen();
-        screenValue = "";
+            //if the last char is and operator, replace it
+            }else if(includesOperator(screenValue.at(-1))){
+                updateScreen(""+screenValue.slice(0,screenValue.length-1)
+                +buttonPressed.textContent);
+                operator = buttonPressed.textContent;
+
+            //if it has already an operator do calculations and make it ready for next calculations
+            }else if(includesOperator(screenValue)){
+                num2 = screenValue.slice(includesOperator(screenValue)+1);
+                updateScreen(operate(num1, operator, num2));
+                operator = buttonPressed.textContent;
+                num1 = screenValue;
+                num2 = null;
+                appendScreen(operator);
+
+            //if screenValue.lenght is >= 1 and hasn't an operator, add one
+            }else if(!includesOperator(screenValue)){
+                num1 = screenValue;
+                operator = buttonPressed.textContent;
+                appendScreen(operator);
+            }else{
+            //if screenValue.length is less than 1, add an operator
+                appendScreen(buttonPressed.textContent);
+            }
+        }else if(buttonPressed.id === "equals"){
+            if(num1 && num2 && operator){
+                updateScreen(operate(num1, operator, num2));
+                num2 = screenValue;
+                num1 = null;
+                operator = null;
+            }
+        }
+        
+    }else if(buttonPressed.id == "clear"){
+        clearProcess();
     }
 
     console.log(screenValue.length);
     console.log(screenValue);
 }
 
-function clearScreen(){
-    screenTextContainer.textContent = "";
+function includesOperator(str){
+    const operators = "+-/*"
+    for(let i =0; i<str.length; i++){
+        if(operators.includes(str[i])){
+            return i;
+        }
+    }
+    return null;
 }
 
-function populateScreen(str){
+function clearProcess(){
+    clearScreen();
+    num1 = null;
+    num2 = null;
+    operator = "";
+    screenValue = "";
+}
+
+function clearScreen(){
+    screenTextContainer.textContent = "";
+
+}
+
+function updateScreen(str){
+    screenTextContainer.textContent = str;
+    screenValue = str;
+}
+
+function appendScreen(str){
     screenTextContainer.textContent = screenTextContainer.textContent.concat(`${str}`);
+    screenValue = screenTextContainer.textContent;
 }
 
 function add(a, b){
@@ -50,6 +118,8 @@ function divide(a,b){
 }
 
 function operate(a, operator, b){
+    a = Number.parseInt(a);
+    b = Number.parseInt(b);
     switch (operator){
         case "+":
         return add(a, b);
