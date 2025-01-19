@@ -13,9 +13,13 @@
     flex-wrap: wrap;
 }
 
+
 button{
     width: 55px;
     height: 55px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 40px;
 }
 
 
@@ -33,6 +37,9 @@ button{
     background-color: #8cc8f0;
     height: 100px;
     flex: 1 0 300px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 40px
 }
 
 .buttons{
@@ -41,6 +48,7 @@ button{
 }
 
 .digits{
+    
     width: 195px;
     margin-right: auto;
     gap: 10px;
@@ -50,4 +58,8 @@ button{
     width: 140px;
     gap: 10px;
     justify-content: right;
+}
+
+#clear{
+    flex: 1 0 300px;
 }

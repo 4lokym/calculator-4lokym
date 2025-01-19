@@ -2,6 +2,22 @@ let num1 = null;
 let num2 = null;
 let operator = null;
 
+let screenContent = null;
+const screen = document.querySelector(".screen");
+
+const buttons = document.querySelector(".buttons");
+
+buttons.addEventListener("click", (e)=>{
+    if(e.target.tagName == "BUTTON" && e.target.textContent != "Clear"){
+        populateScreen(e.target.textContent)
+    }
+});
+
+
+function populateScreen(str){
+    screen.textContent += str;
+}
+
 function add(a, b){
     return a + b;
 }
