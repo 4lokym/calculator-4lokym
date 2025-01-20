@@ -59,7 +59,9 @@ function buttonsPress(e){
 
             if(num1 && num2 && operator){
                 updateScreen(operate(num1, operator, num2));
-                num2 = screenValue;
+                num1 = screenValue;
+                num2 = null;
+                operator = null;
             }
         }
         
@@ -92,8 +94,8 @@ function clearScreen(){
 }
 
 function updateScreen(str){
-    screenTextContainer.textContent = str;
-    screenValue = str;
+    screenTextContainer.textContent = str.toString();
+    screenValue = str.toString();
 }
 
 function appendScreen(str){
@@ -102,7 +104,7 @@ function appendScreen(str){
 }
 
 function add(a, b){
-    return a + b;
+    return a+b;
 }
 
 function subtract(a, b){
