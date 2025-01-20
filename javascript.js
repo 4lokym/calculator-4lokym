@@ -94,8 +94,16 @@ function clearScreen(){
 }
 
 function updateScreen(str){
-    screenTextContainer.textContent = str.toString();
-    screenValue = str.toString();
+    str = str.toString();
+    if(str === "Infinity"){
+        ERR("ERR 0 division");
+        return;
+    }else if(str === "NaN"){
+        ERR("ERR 0/0");
+        return;
+    }
+    screenTextContainer.textContent = str;
+    screenValue = str;
 }
 
 function appendScreen(str){
@@ -119,27 +127,39 @@ function divide(a,b){
     return a/b;
 }
 
+function ERR(str){
+    updateScreen(str);
+    num1 = null;
+    num2 = null;
+    operator = null;
+}
+
 function operate(a, operator, b){
     a = Number.parseInt(a);
     b = Number.parseInt(b);
+    let answer;
     switch (operator){
         case "+":
-        return add(a, b);
+        answer = add(a, b);
         break;
 
         case "-":
-        return subtract(a, b);
+        answer = subtract(a, b);
         break;
 
         case "*":
-        return multiply(a, b);
+        answer = multiply(a, b);
         break;
 
         case "/":
-        return divide(a, b);
+        answer = divide(a, b);
+        answer = Math.round(answer*10) / 10;
         break;
 
         default:
         return "Invalid operator";
     }
+
+
+    return answer;
 }
