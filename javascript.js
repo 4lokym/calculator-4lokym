@@ -23,18 +23,18 @@ function buttonsPress(e){
             appendScreen(buttonPressed.textContent);
         }else if(buttonPressed.classList.contains("operator-buttons")){
             //if the screenValue.length = 1 and is an operator, replace it
-            if(screenValue.length == 1 && includesOperator(screenValue)){
+            if(screenValue.length == 1 && operator){
                 updateScreen(buttonPressed.textContent);
                 operator = buttonPressed.textContent;
 
             //if the last char is and operator, replace it
-            }else if(includesOperator(screenValue.at(-1))){
-                updateScreen(""+screenValue.slice(0,screenValue.length-1)
+            }else if(screenValue.at(-1) == operator){
+                updateScreen(""+screenValue.slice(0,-1)
                 +buttonPressed.textContent);
                 operator = buttonPressed.textContent;
 
             //if it has already an operator do calculations and make it ready for next calculations
-            }else if(includesOperator(screenValue)){
+            }else if(operator && screenValue.length > includesOperator(screenValue)+1){
                 num2 = screenValue.slice(includesOperator(screenValue)+1);
                 updateScreen(operate(num1, operator, num2));
                 operator = buttonPressed.textContent;
@@ -43,7 +43,7 @@ function buttonsPress(e){
                 appendScreen(operator);
 
             //if screenValue.lenght is >= 1 and hasn't an operator, add one
-            }else if(!includesOperator(screenValue)){
+            }else if(!operator){
                 num1 = screenValue;
                 operator = buttonPressed.textContent;
                 appendScreen(operator);
@@ -52,20 +52,20 @@ function buttonsPress(e){
                 appendScreen(buttonPressed.textContent);
             }
         }else if(buttonPressed.id === "equals"){
+
+            if(num1 && operator && !num2 && (screenValue.at(-1) != operator)){
+                num2 = screenValue.slice(includesOperator(screenValue)+1);
+            }
+
             if(num1 && num2 && operator){
                 updateScreen(operate(num1, operator, num2));
                 num2 = screenValue;
-                num1 = null;
-                operator = null;
             }
         }
         
     }else if(buttonPressed.id == "clear"){
         clearProcess();
     }
-
-    console.log(screenValue.length);
-    console.log(screenValue);
 }
 
 function includesOperator(str){
@@ -82,7 +82,7 @@ function clearProcess(){
     clearScreen();
     num1 = null;
     num2 = null;
-    operator = "";
+    operator = null;
     screenValue = "";
 }
 
